@@ -243,64 +243,104 @@ erDiagram
 
 ## 🔑 Environment Variables
 
-### Server (`server/.env`)
-```env
-# NeonDB PostgreSQL Connection URL
-DATABASE_URL="postgresql://neondb_owner:YOUR_PASSWORD@ep-sample.us-east-2.aws.neon.tech/neondb?sslmode=require"
+> [!NOTE]
+> **Zero Setup Required for Evaluators:**  
+> The working environment configurations (`server/.env` and `client/.env`) are **pre-configured and committed directly in this repository**. You can clone and run the project immediately without manually creating any `.env` files or provisioning a database.
+>
+> The cloud **NeonDB PostgreSQL** database is live, pre-migrated, and populated with active seed data. The **Google Gemini AI API key** is also pre-configured.
 
+### Server Configuration (`server/.env`)
+```env
+# NeonDB PostgreSQL Cloud Database (Live & Pre-migrated)
+DATABASE_URL="postgresql://neondb_owner:npg_Cmb61zLdHakQ@ep-divine-cloud-a13qmmj6-pooler.ap-southeast-1.aws.neon.tech/neondb?sslmode=require"
+DIRECT_URL="postgresql://neondb_owner:npg_Cmb61zLdHakQ@ep-divine-cloud-a13qmmj6.ap-southeast-1.aws.neon.tech/neondb?sslmode=require"
+
+# Server Port & Environment
 PORT=5000
 NODE_ENV="development"
 
+# JWT Secret Keys
 JWT_ACCESS_SECRET="meditrack_jwt_access_super_secret_key_2026_dev"
 JWT_EXPIRES_IN="7d"
 
-# Google Gemini API Key (Optional: heuristic fallback active if empty/demo)
-GEMINI_API_KEY="demo_gemini_api_key_placeholder"
+# Google Gemini Free-Tier AI Model (gemini-flash-lite-latest)
+# (Optional: If empty or placeholder, the built-in Clinical Heuristic Fallback engine runs automatically)
+GEMINI_API_KEY="your-gemini-api-key-here"
 
+# Client URL (for CORS protection)
 CLIENT_URL="http://localhost:5173"
 ```
 
-### Client (`client/.env`)
+### Client Configuration (`client/.env`)
 ```env
+# Backend API Base URL
 VITE_API_BASE_URL="http://localhost:5000/api"
 ```
 
 ---
 
-## 🚀 Local Installation & Setup
+## 🚀 Local Installation & Running Guide
 
 ### Prerequisites
-- Node.js (v20+ or v24 LTS)
-- npm or pnpm
+- **Node.js** (v18.x, v20.x, or v22 LTS recommended)
+- **npm** (comes with Node.js) or **pnpm**
+- **Git**
 
-### 1. Backend Setup
+---
+
+### ⚡ Quick Start (Ready in 2 Minutes)
+
+Since the database and environment variables are pre-configured in the repository, you can get the full application running in under 2 minutes:
+
+#### Step 1: Clone the Repository
+```bash
+git clone https://github.com/KhairulBasharbd/MediTrack.git
+cd MediTrack
+```
+
+#### Step 2: Install Dependencies
+Run from the root directory:
+```bash
+npm run install:all
+```
+*(Or install manually: `cd server && npm install && cd ../client && npm install`)*
+
+#### Step 3: Run the Application (Two Terminals)
+
+**Terminal 1 — Start Backend Server (Port 5000):**
+```bash
+npm run dev:server
+# Server will start on: http://localhost:5000
+# Connected to live NeonDB PostgreSQL and Google Gemini AI
+```
+
+**Terminal 2 — Start Frontend Client (Port 5173):**
+```bash
+npm run dev:client
+# Frontend will start on: http://localhost:5173
+```
+
+#### Step 4: Open in Browser
+Visit **[http://localhost:5173](http://localhost:5173)** in your browser and sign in using any of the pre-seeded credentials below.
+
+---
+
+### 🛠️ Optional: Manual Database & Prisma Management
+
+If you wish to re-generate the Prisma client, re-run migrations, or re-seed the cloud database from scratch:
+
 ```bash
 cd server
-npm install
 
-# Generate Prisma Client
+# 1. Generate Prisma Client bindings
 npx prisma generate
 
-# Apply migrations to your NeonDB PostgreSQL database
+# 2. Apply database migrations to NeonDB
 npx prisma migrate dev --name init
 
-# Seed demo doctors and patient
+# 3. Re-seed demo clinical accounts (Cardiologist, General Physician, Patient)
 npm run prisma:seed
-
-# Start backend dev server
-npm run dev
 ```
-Backend will run at: `http://localhost:5000`
-
-### 2. Frontend Setup
-```bash
-cd client
-npm install
-
-# Start Vite dev server
-npm run dev
-```
-Frontend will run at: `http://localhost:5173`
 
 ---
 

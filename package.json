@@ -4,13 +4,13 @@
   "description": "MediTrack Clinic Appointment & AI Symptom Triage System",
   "private": true,
   "scripts": {
-    "dev": "pnpm run dev:server",
-    "dev:server": "cd server && pnpm run dev",
-    "dev:client": "cd client && pnpm run dev",
-    "test": "cd server && pnpm test",
-    "test:server": "cd server && pnpm test",
-    "build:server": "cd server && pnpm run build",
-    "build:client": "cd client && pnpm run build"
+    "dev:server": "cd server && (pnpm run dev || npm run dev)",
+    "dev:client": "cd client && (pnpm run dev || npm run dev)",
+    "install:all": "cd server && (pnpm install || npm install) && cd ../client && (pnpm install || npm install)",
+    "test": "cd server && (pnpm test || npm test)",
+    "test:server": "cd server && (pnpm test || npm test)",
+    "build:server": "cd server && (pnpm run build || npm run build)",
+    "build:client": "cd client && (pnpm run build || npm run build)"
   },
   "keywords": ["healthcare", "appointment-booking", "gemini-ai", "neondb", "express", "react"],
   "author": "",
